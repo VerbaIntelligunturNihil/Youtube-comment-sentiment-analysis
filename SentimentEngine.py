@@ -20,4 +20,12 @@ class SentimentAnalyzer:
             except:
                 polarities.append(0)
 
-        return polarities
+        #Add the polarities to the data
+        data['polarity'] = polarities
+
+        #Convert the polarities to the categorical values
+        data['polarity'][data.polarity > 0] = 1
+        data['polarity'][data.polarity == 0] = 0
+        data['polarity'][data.polarity < 0] = -1
+
+        return data
