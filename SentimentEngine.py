@@ -11,7 +11,7 @@ class SentimentAnalyzer:
     #Get polarity of comments:
     def get_polarity(self,data):
         polarities = self.polarities
-        for element in data.comment_text.values:
+        for element in data.Comment.values:
 
             try:
                 rating = TextBlob(element)

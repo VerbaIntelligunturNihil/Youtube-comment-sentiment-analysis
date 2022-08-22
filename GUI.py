@@ -1,6 +1,6 @@
 #Import needed tools
-from WorkingWithData import DataFrame
 from SentimentEngine import SentimentAnalyzer
+from Parsing import Parser
 import wx, wx.grid
 
 #Create class for GUI
@@ -59,20 +59,17 @@ class Frame(wx.Frame):
     #Analyze comments
     def AnalyzeComments(self, event):
 
-        #Input path to the data
-        path = "Comments.csv"
+        #Create class for parsing data
+        par = Parser(self.youtube_link_textctrl.GetValue())
 
-        #Create class for working with data
-        df = DataFrame(path)
+        #Get data by parsing
+        parsing_data = par.GetData()
 
         #Create class for sentiment analysis
         sa = SentimentAnalyzer()
 
-        #Get data from dataset
-        comments = df.comments
-
         #Get polarity of the comments:
-        data = sa.get_polarity(comments)
+        data = sa.get_polarity(parsing_data)
 
         #Clear data into the grid
         self.comments_grid.ClearGrid()
@@ -80,7 +77,7 @@ class Frame(wx.Frame):
         #Add data to the grid
         for element in range(0, len(data)):
             self.comments_grid.AppendRows(1)
-            self.comments_grid.SetCellValue(element, 1, data['comment_text'][element])
+            self.comments_grid.SetCellValue(element, 1, data['Comment'][element])
             if data['polarity'][element] == 1:
                 self.comments_grid.SetCellBackgroundColour(element, 0, "Green")
                 self.comments_grid.SetCellBackgroundColour(element, 1, "Green")
